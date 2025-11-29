@@ -69,12 +69,14 @@
 
 ## ディレクトリ構成の例
 
-/docs
-/prd
-feature_x.md
-/spec
-openapi.yaml
-/design
-feature_x_design.md
-/adr
-0001-use-outbox-pattern.md
+```
+docs/
+├── prd/
+│   └── feature_x.md
+├── spec/
+│   └── openapi.yaml
+├── design/
+│   └── feature_x_design.md
+└── adr/
+    └── 0001-use-outbox-pattern.md
+```
