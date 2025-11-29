@@ -4,32 +4,56 @@
 
 ## Purpose
 
-You should ask questions and provide feedback after reviewing the PRDs provided (file path = $ARGUMENTS).
+Validate PRD completeness and ask clarifying questions before moving to Spec generation.
+Catch ambiguities early to prevent issues in downstream phases.
 
-Your questions will elicit the user's thoughts and increase the completeness of the PRD, thereby the autonomy of the subsequent design and implementation phases.
+## Input Validation
 
-If the PRD is not complete before moving on to the next phase, there will be many differences and inconsistencies in subsequent phases.
+If `$ARGUMENTS` is empty or not a valid file path:
 
-## Input Validaiton
-
-**IMPORTANT: First check if Issue number is provided as argument**
-
-if `$ARGUMENTS` is empty, undefined, or not a valid file path:
-
-- Display errorL `❌ エラー　：PRDのファイルパスが必要です。引数を指定して下さい。😅`
-- Display usage example: `例: /review-prd path/to/prd-file.md`
-- **STOP execution immediately - do not proceed with any subsequent steps**
-
-Only proceed with the following steps if a valid file path is provided.
+- Display error: `❌ エラー: PRDのファイルパスが必要です。`
+- Display usage: `例: /review-prd docs/prd/feature.md`
+- **STOP execution**
 
 ## Execution Steps
 
-1. Read the design files, implementation files, and other information related to the provided PRDs throughout the project to understand the background information.
+### 1. Read PRD and Related Context
 
-2. Based on the information gathered in 1, think of questions to ask the user to clarify any ambiguities or uncertainties when trying to generate a design and implementation from the current PRD.
+- Read the PRD file
+- Search for related design/implementation files mentioned in PRD
+- Gather context from existing codebase
 
-3. Check the checklist to assure that the provided PRD meets the requirements.
+### 2. Check Completeness
 
-- []: Include a TODO list, covering what needs to be done in design and implementation.
-- []: Include all file paths to information sources such as primary information and references to relevant design and implementation files
-- []: Include the file paths to which the design and implementation files will be written.
+Verify PRD contains:
+
+- [ ] Background & Purpose (Why?)
+- [ ] User Stories (Who wants what?)
+- [ ] Success Criteria (How to measure?)
+- [ ] Scope (In/Out of scope)
+- [ ] Non-functional requirements (Performance, Security, Scalability)
+- [ ] Related file paths (for Spec/Design/Implementation outputs)
+- [ ] Dependencies (on other systems/features)
+
+### 3. Generate Targeted Questions
+
+For any missing or ambiguous sections, ask specific questions:
+
+- Business: "What's the priority? Expected user volume?"
+- Technical: "Performance requirement? Consistency model?"
+- Scope: "How to handle [error case]? What about [edge case]?"
+- Dependencies: "Does this depend on [system X]? Fallback behavior?"
+
+### 4. Output Results
+
+Present findings as:
+
+- ✅ Complete sections
+- ⚠️ Missing or ambiguous sections
+- ❓ Questions to clarify
+
+## Notes
+
+- PRD must be solid before Spec generation - ambiguities multiply downstream
+- Ask questions with specific choices to help user decide
+- Re-run this command after updating PRD until all items are ✅
