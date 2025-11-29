@@ -1,6 +1,6 @@
-# SDD Commands
+# Agentic Commands
 
-SDD（Spec-Driven Development）のための Claude Code コマンド集
+AI エージェントとの協働開発のための Claude Code コマンド集
 
 ## このリポジトリについて
 
@@ -45,7 +45,7 @@ cp sdd-sequential/*.md ~/.claude/commands/
 ## ディレクトリ構成
 
 ```
-sdd-commands/
+agentic-commands/
 ├── sdd-sequential/       # 順次実行型コマンド群（推奨）
 │   ├── review-prd.md
 │   ├── generate-spec.md
