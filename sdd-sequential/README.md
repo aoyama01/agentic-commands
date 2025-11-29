@@ -87,12 +87,16 @@ graph TD
 
 ### 2. `/generate-spec` - 仕様書生成
 
-**目的:** PRD から機械可読な仕様書を生成（WHAT を定義）
+**目的:** PRD または概要説明から機械可読な仕様書を生成（WHAT を定義）
 
 **使い方:**
 
 ```bash
+# PRDファイルから生成
 /generate-spec docs/prd/feature-name.md --output docs/spec/feature-spec.md
+
+# 概要説明から直接生成（PRDなしで手軽に）
+/generate-spec "ユーザーが予約履歴をCSVでエクスポートできる機能" --output docs/spec/export-spec.md
 ```
 
 **生成内容:**
@@ -105,6 +109,8 @@ graph TD
 
 **形式:** OpenAPI (REST) / Protobuf (gRPC) / Markdown (CLI)
 
+**Note:** 概要説明モードでは、AI が不足情報を質問してから Spec を生成します。
+
 ---
 
 ### 3. `/generate-design` - 設計書生成
@@ -114,7 +120,11 @@ graph TD
 **使い方:**
 
 ```bash
-/generate-design docs/prd/feature-name.md --spec docs/spec/feature-spec.md --output docs/design/feature-design.md
+# Specから生成（PRDはオプション）
+/generate-design docs/spec/feature-spec.md --output docs/design/feature-design.md
+
+# PRDも参照したい場合
+/generate-design docs/spec/feature-spec.md --prd docs/prd/feature-name.md --output docs/design/feature-design.md
 ```
 
 **生成内容:**
@@ -136,7 +146,7 @@ graph TD
 **使い方:**
 
 ```bash
-/implement docs/prd/feature-name.md --spec docs/spec/feature-spec.md --design docs/design/feature-design.md --output-dir ./
+/implement docs/spec/feature-spec.md --design docs/design/feature-design.md --output-dir ./
 ```
 
 **生成内容:**
@@ -158,17 +168,21 @@ graph TD
 
 ### 5. `/verify` - 整合性検証 (オプション)
 
-**目的:** PRD/Spec/Design/Implementation の整合性をチェック
+**目的:** Spec/Design/Implementation の整合性をチェック（PRDはオプション）
 
 **使い方:**
 
 ```bash
-/verify docs/prd/feature-name.md --spec docs/spec/feature-spec.md --design docs/design/feature-design.md --impl ./internal/
+# 基本（PRDなし）
+/verify docs/spec/feature-spec.md --design docs/design/feature-design.md --impl ./internal/
+
+# PRDとの整合性もチェックしたい場合
+/verify docs/spec/feature-spec.md --design docs/design/feature-design.md --impl ./internal/ --prd docs/prd/feature-name.md
 ```
 
 **検証項目:**
 
-- PRD ↔ Spec: 全ユーザーストーリーが Spec でカバーされているか
+- PRD ↔ Spec: 全ユーザーストーリーが Spec でカバーされているか（PRD指定時のみ）
 - Spec ↔ Design: 全 API・スキーマが Design で考慮されているか
 - Design ↔ Implementation: アーキテクチャが実装に反映されているか
 - Spec ↔ Implementation: API 契約が正確に実装されているか
@@ -194,18 +208,18 @@ vim docs/prd/reservation-system.md
 # → API仕様・DBスキーマをレビュー
 # → 必要なら修正して再生成
 
-# 4. Design生成
-/generate-design docs/prd/reservation-system.md --spec docs/spec/reservation-spec.md --output docs/design/reservation-design.md
+# 4. Design生成（Specから。PRDはオプション）
+/generate-design docs/spec/reservation-spec.md --output docs/design/reservation-design.md
 # → アーキテクチャ・技術選択をレビュー
 # → 問題なければ次へ
 
-# 5. 実装生成
-/implement docs/prd/reservation-system.md --spec docs/spec/reservation-spec.md --design docs/design/reservation-design.md
+# 5. 実装生成（SpecとDesignから）
+/implement docs/spec/reservation-spec.md --design docs/design/reservation-design.md
 # → コード + テストが生成される
 # → テスト実行して確認
 
 # 6. 整合性確認 (任意)
-/verify docs/prd/reservation-system.md --spec docs/spec/reservation-spec.md --design docs/design/reservation-design.md --impl ./internal/
+/verify docs/spec/reservation-spec.md --design docs/design/reservation-design.md --impl ./internal/
 ```
 
 ---

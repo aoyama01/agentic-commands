@@ -1,22 +1,27 @@
 # Verify Alignment
 
-<!-- /verify $PRD_PATH --spec $SPEC_PATH --design $DESIGN_PATH --impl $IMPL_DIR -->
+<!-- /verify $SPEC_PATH --design $DESIGN_PATH --impl $IMPL_DIR [--prd $PRD_PATH] -->
 
 ## Purpose
 
-Verify alignment between PRD, Spec, Design, and Implementation.
-Catch drift and inconsistencies across artifacts.
+Verify alignment between Spec, Design, and Implementation.
+Optionally verify PRD coverage if provided.
 
 ## Input Validation
 
-All arguments required. If any missing, display error and usage.
+If `$SPEC_PATH`, `--design $DESIGN_PATH`, or `--impl $IMPL_DIR` is missing:
+
+- Display error: `❌ エラー: Spec、Design、Implのパスが必要です。`
+- Display usage: `例: /verify docs/spec/feature-spec.md --design docs/design/feature-design.md --impl ./internal/`
+- **STOP execution**
 
 ## Execution Steps
 
-### 1. PRD ↔ Spec Alignment
+### 1. PRD ↔ Spec Alignment (if `--prd` specified)
 
 - All user stories have corresponding features in Spec
 - All success criteria are verifiable through Spec
+- Skip if PRD not provided
 
 ### 2. Spec ↔ Design Alignment
 

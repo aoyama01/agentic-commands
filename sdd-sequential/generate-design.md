@@ -1,6 +1,6 @@
 # Generate Design Document
 
-<!-- /generate-design $PRD_PATH --spec $SPEC_PATH [--output PATH] -->
+<!-- /generate-design $SPEC_PATH [--prd $PRD_PATH] [--output PATH] -->
 
 ## Purpose
 
@@ -9,17 +9,18 @@ Focus on key architectural decisions and technology choices.
 
 ## Input Validation
 
-If `$PRD_PATH` or `--spec $SPEC_PATH` is missing:
+If `$SPEC_PATH` is missing:
 
-- Display error and usage example
+- Display error: `❌ エラー: Specのファイルパスが必要です。`
+- Display usage: `例: /generate-design docs/spec/feature-spec.md --output docs/design/feature-design.md`
 - **STOP execution**
 
 ## Execution Steps
 
 ### 1. Read Context
 
-- PRD: Business constraints
-- Spec: Technical contracts
+- Spec: Technical contracts (required)
+- PRD: Business constraints (optional, if `--prd` specified)
 - Existing codebase: Current patterns
 - `claude.md`: Project conventions
 
@@ -62,7 +63,7 @@ If `$PRD_PATH` or `--spec $SPEC_PATH` is missing:
 
 Write Design to specified path with:
 
-- Source PRD and Spec references
+- Source Spec reference (and PRD if provided)
 - Review checklist
 - Next step: `/implement`
 

@@ -1,19 +1,36 @@
 # Generate Specification
 
-<!-- /generate-spec $ARGUMENTS [--output PATH] -->
+<!-- /generate-spec $PRD_PATH_OR_SUMMARY [--output PATH] -->
 
 ## Purpose
 
-Generate machine-readable Specification from reviewed PRD.
+Generate machine-readable Specification from PRD or summary description.
 Spec defines WHAT the system should do (API contracts, data models, validation rules).
 
 ## Input Validation
 
-If `$ARGUMENTS` is empty or not a valid file path:
+If `$PRD_PATH_OR_SUMMARY` is empty:
 
-- Display error: `❌ エラー: PRDのファイルパスが必要です。`
-- Display usage: `例: /generate-spec docs/prd/feature.md --output docs/spec/feature-spec.md`
+- Display error: `❌ エラー: PRDのファイルパスまたは概要説明が必要です。`
+- Display usage:
+  - `例: /generate-spec docs/prd/feature.md --output docs/spec/feature-spec.md`
+  - `例: /generate-spec "ユーザーが予約履歴をCSVでエクスポートできる機能" --output docs/spec/export-spec.md`
 - **STOP execution**
+
+## Input Mode Detection
+
+**If argument is a valid file path:**
+
+- Read PRD file and proceed to Step 1
+
+**If argument is NOT a file path (summary mode):**
+
+- Treat argument as feature summary
+- Before proceeding, ask clarifying questions:
+  - Who are the target users?
+  - What are the key success criteria?
+  - Any constraints (performance, security, etc.)?
+- Proceed to Step 2 after gathering sufficient context
 
 ## Execution Steps
 
@@ -52,9 +69,9 @@ If `$ARGUMENTS` is empty or not a valid file path:
 - Throughput limits
 - Security requirements (auth, input sanitization)
 
-### 3. Validate Against PRD
+### 3. Validate Against Source
 
-- All user stories covered
+- All user stories / requirements covered
 - All success criteria can be verified
 - All constraints are specific and measurable
 
@@ -62,7 +79,7 @@ If `$ARGUMENTS` is empty or not a valid file path:
 
 Write Spec to specified path with:
 
-- Source PRD reference
+- Source reference: `PRD: <file path>` or `Summary: "<inline summary>"`
 - Generated timestamp
 - Review checklist
 - Next step: `/generate-design`

@@ -1,24 +1,24 @@
 # Generate Implementation
 
-<!-- /implement $PRD_PATH --spec $SPEC_PATH --design $DESIGN_PATH [--output-dir PATH] -->
+<!-- /implement $SPEC_PATH --design $DESIGN_PATH [--output-dir PATH] -->
 
 ## Purpose
 
-Generate implementation code and tests based on PRD, Spec, and Design.
+Generate implementation code and tests based on Spec and Design.
 Code must conform to Spec contracts and follow Design architecture.
 
 ## Input Validation
 
-If `$PRD_PATH`, `--spec $SPEC_PATH`, or `--design $DESIGN_PATH` is missing:
+If `$SPEC_PATH` or `--design $DESIGN_PATH` is missing:
 
-- Display error and usage example
+- Display error: `❌ エラー: SpecとDesignのファイルパスが必要です。`
+- Display usage: `例: /implement docs/spec/feature-spec.md --design docs/design/feature-design.md --output-dir ./`
 - **STOP execution**
 
 ## Execution Steps
 
 ### 1. Load Context
 
-- PRD: Business context and acceptance criteria
 - Spec: Exact contracts (API, schemas, errors)
 - Design: Architecture and technology choices
 - `claude.md`: Coding standards
