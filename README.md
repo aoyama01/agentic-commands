@@ -1,82 +1,62 @@
-# PRD / Spec / Design Docs / ADR の役割整理
+# SDD Commands
 
-## 1. PRD (Product Requirements Document / プロダクト要件文書)
+SDD（Spec-Driven Development）のための Claude Code コマンド集
 
-- **対象読者**: ビジネス・PM・開発チーム全員
-- **内容**: 「なぜ作るのか、何を作るのか」をビジネス価値・ユーザ価値ベースで記述
-- **例**
-  - 背景・目的
-  - ユーザーストーリー（誰が何をしたいか）
-  - 成果指標（KPI / 成功条件）
-  - スコープと非スコープ
-- **役割**: プロダクトの「方向性・価値」を共有する
+## このリポジトリについて
 
----
+AI エージェントとの協働開発を構造化するコマンド群です。
 
-## 2. Spec (Specification / 仕様書)
+**PRD → Spec → Design → Implementation** の流れで開発を進め、各段階で人間がレビューすることで品質を担保します。
 
-- **対象読者**: 開発者、QA、外部利用者（API クライアントなど）
-- **内容**: 「どう動くべきか」を機械可読 or 明確な形式で記述
-- **例**
-  - API 仕様 (OpenAPI, Protobuf)
-  - DB スキーマ
-  - 入出力フォーマット、制約、エラーハンドリング
-- **役割**: 実装と利用の「契約書」になる
+## アプローチ
 
----
+### sdd-sequential（推奨）
 
-## 3. Design Docs (設計ドキュメント)
+PRD → Spec → Design → Implementation を順番に進めるアプローチ
 
-- **対象読者**: 主に開発者、設計レビュー参加者
-- **内容**: 「どう作るか」を技術選択・アーキテクチャの観点で記述
-- **例**
-  - アーキテクチャ図
-  - 採用する技術・ライブラリと理由
-  - データフローや処理シーケンス
-  - スケーラビリティ・セキュリティの考慮点
-- **役割**: 実装の青写真（Blueprint）、レビュー用資料
+- 各段階で人間がレビュー可能
+- トレーサビリティが明確
+- 変更時の影響範囲がわかりやすい
 
----
+詳細: [sdd-sequential/README.md](sdd-sequential/README.md)
 
-## 4. ADR (Architecture Decision Record)
+### parallel-and-reconcile
 
-- **Design Docs = 「提案・案」**
-- **ADR = 「決定・理由」**
-- **役割**
-  - 採用した設計の理由を短く残す
-  - 将来の開発者が設計意図を理解できるようにする
-- **例**
-  - 「なぜ Outbox パターンを選んだか。代替案（直接 Publish, CDC）との比較」
+PRD から並列に Design + Implementation を生成し、Reconciliation で整合性を取るアプローチ
 
----
+- 実験的
+- Spec の欠如による課題あり
 
-## 全体の流れ
+詳細: [parallel-and-reconcile/README.md](parallel-and-reconcile/README.md)
 
-1. **PRD**
-   - プロダクトの「Why / What」を定義
-   - 例: 「学生が答案をアップロードでき、添削者が返却できる仕組みを提供する」
-2. **Spec**
-   - 具体的な機能仕様に落とし込む（API, DB, UI 仕様）
-   - 例: `POST /answersheets` のリクエスト・レスポンス形式
-3. **Design Docs**
-   - 技術的な実現方法を検討・合意
-   - 例: 「非同期処理は Outbox + SQS + Lambda を採用」
-4. **ADR**
-   - 採用した設計の理由を短く残す
-   - 例: 「なぜ Outbox を選んだか」
+## クイックスタート
 
----
+1. 使いたいコマンドファイルを `.claude/commands/` にコピー
 
-## ディレクトリ構成の例
+```bash
+# sdd-sequential のコマンドを使う場合
+cp sdd-sequential/*.md ~/.claude/commands/
+```
+
+2. PRD を作成
+
+3. `/review-prd` から開始
+
+## ディレクトリ構成
 
 ```
-docs/
-├── prd/
-│   └── feature_x.md
-├── spec/
-│   └── openapi.yaml
-├── design/
-│   └── feature_x_design.md
-└── adr/
-    └── 0001-use-outbox-pattern.md
+sdd-commands/
+├── sdd-sequential/       # 順次実行型コマンド群（推奨）
+│   ├── review-prd.md
+│   ├── generate-spec.md
+│   ├── generate-design.md
+│   ├── implement.md
+│   └── verify.md
+├── parallel-and-reconcile/  # 並列生成型（実験的）
+└── docs/
+    └── concepts.md       # PRD/Spec/Design/ADR の役割整理
 ```
+
+## 関連ドキュメント
+
+- [PRD / Spec / Design Docs / ADR の役割整理](docs/concepts.md)
