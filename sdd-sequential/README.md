@@ -256,6 +256,22 @@ vim docs/prd/reservation-system.md
 - AI は前段階の成果物を参照して次を生成
 - 人間は各段階でレビュー・修正可能
 
+### 各コマンドの引数設計
+
+| コマンド | 必須 | オプション | 理由 |
+|----------|------|------------|------|
+| `/generate-spec` | PRD or 概要 | `--output` | 概要からでも生成可能にして手軽さを確保 |
+| `/generate-design` | Spec | `--prd`, `--output` | Specに技術契約が集約済み。PRDは背景確認用 |
+| `/implement` | Spec, Design | `--output-dir` | 実装に必要な情報はSpec+Designで完結 |
+| `/verify` | Spec, Design, Impl | `--prd` | PRD整合性チェックはオプション |
+
+**なぜ `/implement` でPRDを見ないのか？**
+
+- Spec に「何を作るか」の契約が全て含まれている
+- Design に「どう作るか」の判断が全て含まれている
+- PRD のビジネス背景は実装時には余計な情報になりえる
+- 疑問が出たらその時点でPRDを参照すればよい
+
 ---
 
 ## ディレクトリ構成例
