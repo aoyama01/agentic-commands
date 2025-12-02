@@ -1,56 +1,12 @@
----
-description: Generate a conventional commit message from staged changes
-argument-hint: [--ja]
-allowed-tools: Bash
----
+ステージング中の変更内容を確認して、簡潔な 1 行のコミットメッセージを提案してください。
 
-# Commit Message Generator
+git diff --staged を実行して変更内容を確認してください。
 
-Generate a concise commit message following Conventional Commits format.
+コミットメッセージのルール：
 
-**Default**: English | **`--ja`**: Japanese
+- デフォルト：英語で生成（例：feat: add user authentication）
+- `--ja` オプションが指定されている場合：日本語で生成（例：feat: ユーザー認証機能を追加）
+- 適切なプレフィックス（feat/fix/refactor/docs 等）を付ける
+- 1 行で簡潔に
 
-## Instructions
-
-1. Check if there are staged changes (`git diff --staged --name-only`)
-   - If none, inform the user and stop
-2. Analyze the changes:
-   - Review `git diff --staged` for content
-   - Check `git log --oneline -10` for project style
-3. Generate a message following this format:
-
-```
-   <type>[(scope)]: <summary>
-```
-
-## Types
-
-- `feat` - New feature
-- `fix` - Bug fix
-- `docs` - Documentation only
-- `style` - Formatting, whitespace
-- `refactor` - Code restructuring
-- `perf` - Performance improvement
-- `test` - Adding/updating tests
-- `chore` - Build process, tools
-
-## Rules
-
-**English** (default):
-
-- Max 50 characters
-- Lowercase start ("add" not "Add")
-- Imperative mood ("add" not "added")
-- No period at end
-
-**Japanese** (with `--ja`):
-
-- Max 50 characters
-- Use "〜する" or "〜を追加" forms
-- No period at end
-
-**Scope** (optional): Add when changes are module-specific (e.g., `auth`, `api`, `db`)
-
-**Multiple changes**: Recommend splitting if unrelated types are mixed (feat + fix)
-
-Match the tone and style of recent commits in `git log`.
+ユーザーの入力に `--ja` が含まれているかチェックして、言語を切り替えてください。
